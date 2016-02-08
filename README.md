@@ -40,7 +40,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Ran into issues regarding seeing whether or not the loading icon was working. Also ran into issues regarding my naming of the TableView.  
 
 ## License
 
