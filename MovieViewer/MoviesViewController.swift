@@ -10,10 +10,14 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     @IBOutlet weak var TableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var movies: [NSDictionary]?
+    //var filteredData = [String]!
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,9 +147,34 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let posterPath = movie["poster_path"] as! String
 
         let baseUrl="https://image.tmdb.org/t/p/w342"
-        let imageUrl = NSURL(string: baseUrl + posterPath)
+        //let imageUrl = NSURL(string: baseUrl + posterPath)
+        let imageUrl = baseUrl+posterPath
+        let imageRequest = NSURLRequest(URL: (NSURL(string: imageUrl)!))
+
+        cell.posterView.setImageWithURLRequest(
+            imageRequest,
+            placeholderImage: nil,
+            success: { (imageRequest, imageResponse, image) -> Void in
+                
+                // imageResponse will be nil if the image is cached
+                if imageResponse != nil {
+                    print("Image was NOT cached, fade in image")
+                    cell.posterView.alpha = 0.0
+                    cell.posterView.image = image
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        cell.posterView.alpha = 1.0
+                    })
+                } else {
+                    print("Image was cached so just update the image")
+                    cell.posterView.image = image
+                }
+            },
+            failure: { (imageRequest, imageResponse, error) -> Void in
+                // do something for the failure condition
+        })
         
-        cell.posterView.setImageWithURL(imageUrl!)
+        //cell.posterView.setImageWithURL(imageUrl!)
+        
         
         
         cell.titleLabel.text = title
