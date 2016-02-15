@@ -24,6 +24,10 @@ class DetailViewController: UIViewController {
         
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
         
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.tintColor = UIColor(red: 0.25, green: 0.25, blue: 1.0, alpha: 0.8)
+        }
+        
         let title = movie["title"] as? String
         titleLabel.text = title
         

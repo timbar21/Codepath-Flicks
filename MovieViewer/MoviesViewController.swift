@@ -16,6 +16,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     var movies: [NSDictionary]?
     //var filteredData = [String]!
+    var endpoint: String!
     
 
     
@@ -26,6 +27,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
 
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.tintColor = UIColor(red: 0.25, green: 0.25, blue: 1.0, alpha: 0.8)
+        }
         
         tableView.dataSource=self
         tableView.delegate=self
@@ -94,7 +98,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func loadDataFromNetwork() {
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = NSURL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         
         let request = NSURLRequest(
             URL: url!,
@@ -146,6 +150,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let overview=movie["overview"] as! String
         let baseUrl="https://image.tmdb.org/t/p/w342"
 
+        cell.selectionStyle = .None
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.blueColor()
+        cell.selectedBackgroundView = backgroundView
+        
         if let posterPath = movie["poster_path"] as? String
         {
             let imageUrl = NSURL(string: baseUrl + posterPath)
